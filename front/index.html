@@ -1,0 +1,82 @@
+<script>
+        function login(){
+            var fields = document.querySelector("form");
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() { 
+                if (this.readyState == 4 && this.status == 200) {
+
+                    statusCode = JSON.parse(this.responseText);
+                    var respBack = Number(statusCode.back);
+                    var respRole = Number(statusCode.role);
+
+                    document.getElementById("response").innerHTML = this.responseText;
+    
+
+                    if (respBack == 1){
+                        if (respRole == "1"){
+                            window.location.href = "instructor.html";
+                        }
+                        else{
+                           // document.getElementById("response").innerHTML = "Welcome Student!";
+                            window.location.href = "student.html";
+                        }
+                    }
+                    else if (respBack == 0){
+                                document.getElementById("response").innerHTML = "Invalid Username / Password. Please try again.";
+                        } 
+                 
+                    console.log("Results for Connections:");
+                    console.log(statusCode);
+    
+                }
+            };
+            xhr.open("POST", "login.php", true); // Where to post to.
+            xhr.send(new FormData(fields)); // Send the fields of the form data
+        };
+    </script>
+    
+    <html>
+    <style> 
+            body{
+    background-image: url('https://media.giphy.com/media/BHNfhgU63qrks/giphy.gif');
+    background-size: cover;
+    
+    
+    
+    height: 100vh;
+    padding:0;
+    margin:0;
+}
+</style> 
+    <body>
+    <form>
+        <div class="login-box">
+        <h1 style="color:white"><center><font size="9">CS490 Online Exam Builder</font></center></h1>
+        
+        <div class="textbox"><center>
+        <input type="text" name="ucid" placeholder="UCID..."/>
+        </center>
+        </div>
+        
+        <div class="textbox"><center>
+        <input type="password" name="pass" placeholder="Password..."/>
+        </center>
+        </div>
+        
+        <br><br>
+        <center>
+        <input class="btn" type="button" name="" id="submit" value="Login">
+        </center>
+        <center><font size="5">
+        <p id="response" style="color:white"></p>
+        </font>
+        </center>
+    
+        <script>
+            var submit = document.getElementById("submit");
+            submit.addEventListener("click", login);
+        </script>
+    
+    </form>
+    </body>
+    </html>
